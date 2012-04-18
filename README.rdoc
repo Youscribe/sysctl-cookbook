@@ -11,7 +11,7 @@ node[:sysctl] = A namespace for sysctl settings.
 There are two ways of setting sysctl values:
 1. Set chef attributes in the _sysctl_ namespace, E.G.:
 <tt>default[:sysctl][:set swappiness] = { "vm.swappiness" => "20" }</tt>
-2. Set values in a cookbook_file - 69-chef-static.conf
+2. Set values in a cookbook_file - 50-chef-static.conf
 3. With Ressource/Provider
 
 Resource/Provider
@@ -37,18 +37,18 @@ sysctl
 - path: path to a specific file
 
 # Examples
-    # set "vm.swappiness" to "60". will create /etc/sysctl.d/69-vm.wappiness.conf
+    # set "vm.swappiness" to "60". will create /etc/sysctl.d/40-vm.wappiness.conf
     sysctl "vm.swappiness" do
       value "40"
     end
    
-   # the same. will create /etc/sysctl.d/69-vm_swappiness_to_60.conf
+   # the same. will create /etc/sysctl.d/40-vm_swappiness_to_60.conf
    sysctl "vm swappiness to 60" do
      variable "vm.swappiness"
      value "60"
    end
 
-   #remove /etc/sysctl.d/69-ip_config.conf
+   #remove /etc/sysctl.d/40-ip_config.conf
    sysctl "ip config" do
      action :remove
    end

@@ -23,14 +23,14 @@ if node.attribute?(:sysctl)
 
   attr_txt = compile_attr("", node[:sysctl]).join("\n") + "\n"
 
-  file "/etc/sysctl.d/68-chef-attributes.conf" do
+  file "/etc/sysctl.d/50-chef-attributes.conf" do
     content attr_txt
     mode "0644"
     notifies :start, "service[procps]"
   end
 end
 
-cookbook_file "/etc/sysctl.d/69-chef-static.conf" do
+cookbook_file "/etc/sysctl.d/50-chef-static.conf" do
   ignore_failure true
   mode "0644"
   notifies :start, "service[procps]"

@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-path = new_resource.path ? new_resource.path : "/etc/sysctl.d/69-#{new_resource.name}.conf"
+path = new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
 
 action :save do
   file path do

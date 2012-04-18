@@ -18,11 +18,11 @@
 # limitations under the License.
 #
 
-path = new_resource.path ? new_resource.path : "/etc/sysctl.d/69-#{new_resource.name.gsub(" ", "_")}.conf"
+path = new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name.gsub(" ", "_")}.conf"
 
 action :save do
   template path do
-    source "69-sysctl.conf.erb"
+    source "sysctl.conf.erb"
     owner "root"
     group "root"
     mode "0644"

@@ -6,14 +6,14 @@
 #
 
 if node.attribute?(:sysctl)
-  node[:sysctl].each do |name, instructions|
-    template "/etc/sysctl.d/50-chef-attributes-#{name.gsub(" ", "_")}.conf" do
+  node[:sysctl].each do |item|
+    template "/etc/sysctl.d/50-chef-attributes-#{item[0].gsub(" ", "_")}.conf" do
       source "sysctl.conf.erb"
       mode "0644"
       owner "root"
       group "root"
-      variables (
-        :instructions => instructions
+      variables(
+        :instructions => item[1]
       )
       notifies :start, "service[procps]"
     end

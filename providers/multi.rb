@@ -18,8 +18,6 @@
 # limitations under the License.
 #
 
-path = new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name.gsub(" ", "_")}.conf"
-
 action :save do
   template path do
     source "sysctl.conf.erb"
@@ -48,4 +46,6 @@ action :remove do
   end
 end
 
-service "procps"
+def path
+  return new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name.gsub(" ", "_")}.conf"
+end

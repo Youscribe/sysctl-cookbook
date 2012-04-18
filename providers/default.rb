@@ -17,11 +17,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-path = new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
 
 action :save do
   file path do
-    content "#{new_resource.variable} = {new_resource.value}"
+    content "#{variable} = {new_resource.value}"
     owner "root"
     group "root"
     mode "0644"
@@ -31,7 +30,7 @@ end
 
 action :set do
   execute "set sysctl" do
-    command "sysctl #{new_resource.variable}={new_resource.value}"
+    command "sysctl #{variable}={new_resource.value}"
   end
 end
 
@@ -41,4 +40,10 @@ action :remove do
   end
 end
 
-service "procps"
+def path
+  new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
+end
+
+def variable
+  return new_resource.variable ? new_resource.variable : new_resource.name
+end

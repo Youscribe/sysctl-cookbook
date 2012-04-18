@@ -1,0 +1,5 @@
+# Sysctl file for <%= @name %>
+
+<% @insctuctions.each do |variable, value| -%>
+<%= @variable %> = <%= value %>
+<% end %>

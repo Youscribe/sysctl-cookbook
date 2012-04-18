@@ -1,11 +1,11 @@
 def initialize(*args)
   super
-  @action = :set
+  @action = :save
 end
 
-actions :set, :remove
+actions :save, :set, :remove
 
-attribute :variable, :kind_of => String, :name_attribute => true
+attribute :name, :kind_of => String, :name_attribute => true
+attribute :variable, :kind_of => String, :default => new_resource.name 
 attribute :value, :kind_of => String, :required => true
-attribute :instructions, :kind_of => Hash, :default => nil
-attribute :save, :kind_of => [ TrueClass, FalseClass ], :default => true
+attribute :path, :kind_of => String, :default => nil

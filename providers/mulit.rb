@@ -17,21 +17,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-path = new_resource.path ? new_resource.path : "/etc/sysctl.d/69-#{new_resource.name}.conf"
+
+path = new_resource.path ? new_resource.path : "/etc/sysctl.d/69-#{new_resource.name.gsub(" ", "_")}.conf"
 
 action :save do
-  file path do
-    content "#{new_resource.variable} = {new_resource.value}"
+  template path do
+    source "69-sysctl.conf.erb"
     owner "root"
     group "root"
     mode "0644"
+    variables(
+      :instructions => new_resource.instructions,
+      :name => new_resource.name_attribute
+      )
     notifies :start, "service[procps]"
   end
 end
 
 action :set do
-  execute "set sysctl" do
-    command "sysctl #{new_resource.variable}={new_resource.value}"
+  new_resource.instructions.each do |variable , value|
+    execute "set sysctl" do
+      command "sysctl #{variable}={value}"
+    end
   end
 end
 

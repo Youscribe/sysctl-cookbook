@@ -5,6 +5,12 @@
 # Copyright 2011, Fewbytes Technologies LTD
 #
 
+#TODO change this by something more "clean".
+execute "remove old files" do
+  command "rm /etc/sysctl.d/50-chef-attributes-*.conf"
+  action :run
+end
+
 if node.attribute?(:sysctl)
   node[:sysctl].each do |item|
     template "/etc/sysctl.d/50-chef-attributes-#{item[0].gsub(" ", "_")}.conf" do

@@ -35,7 +35,7 @@ end
 action :set do
   new_resource.instructions.each do |variable , value|
     execute "set sysctl" do
-      command "sysctl #{variable}={value}"
+      command "sysctl #{variable}=#{value}"
     end
   end
 end

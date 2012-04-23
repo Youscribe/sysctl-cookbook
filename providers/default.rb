@@ -20,7 +20,7 @@
 
 action :save do
   file path do
-    content "#{variable} = {new_resource.value}"
+    content "#{variable} = #{new_resource.value}\n"
     owner "root"
     group "root"
     mode "0644"
@@ -30,7 +30,7 @@ end
 
 action :set do
   execute "set sysctl" do
-    command "sysctl #{variable}={new_resource.value}"
+    command "sysctl #{variable}=#{new_resource.value}"
   end
 end
 

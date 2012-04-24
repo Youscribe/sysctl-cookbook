@@ -7,7 +7,7 @@
 
 #TODO change this by something more "clean".
 execute "remove old files" do
-  command "rm /etc/sysctl.d/50-chef-attributes-*.conf"
+  command "rm -- force /etc/sysctl.d/50-chef-attributes-*.conf"
   action :run
 end
 

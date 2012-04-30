@@ -18,34 +18,42 @@
 # limitations under the License.
 #
 
+
 action :save do
-  template path do
-    source "sysctl.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
+  template new_resource.path do
+    notifies :start, 'service[procps]'
+    source 'sysctl.conf.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
     variables(
       :instructions => new_resource.instructions,
-      :name => new_resource.name_attribute
-      )
-    notifies :start, "service[procps]"
+      :name => new_resource.name_attribute)
   end
+  new_resource.updated_by_last_action(true)
 end
 
+
 action :set do
-  new_resource.instructions.each do |variable , value|
-    execute "set sysctl" do
+  new_resource.instructions.each do |variable, value|
+    execute 'set sysctl' do
       command "sysctl #{variable}=#{value}"
     end
   end
+  new_resource.updated_by_last_action(true)
 end
+
 
 action :remove do
   file path do
     action :delete
   end
+  new_resource.updated_by_last_action(true)
 end
 
+
+private
 def path
-  return new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name.gsub(" ", "_")}.conf"
+  f_name = new_resource.name.gsub(' ', '_')
+  return new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{f_name}.conf"
 end

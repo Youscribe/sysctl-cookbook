@@ -3,7 +3,7 @@
 # Provider:: sysctl
 # Author:: Guilhem Lettron <guilhem.lettron@youscribe.com>
 #
-# Copyright 20012, Societe Publica.
+# Copyright 2012, Societe Publica.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,32 +18,42 @@
 # limitations under the License.
 #
 
+
 action :save do
-  file path do
-    content "#{variable} = #{new_resource.value}\n"
-    owner "root"
-    group "root"
-    mode "0644"
-    notifies :start, "service[procps]"
+  file new_resource.path do
+    notifies :start, 'service[procps]'
+    content "#{new_resource.variable} = #{new_resource.value}\n"
+    owner 'root'
+    group 'root'
+    mode '0644'
   end
+  new_resource.updated_by_last_action(true)
 end
+
 
 action :set do
-  execute "set sysctl" do
-    command "sysctl #{variable}=#{new_resource.value}"
+  execute 'set sysctl' do
+    command "sysctl #{new_resource.variable}=#{new_resource.value}"
   end
+  new_resource.updated_by_last_action(true)
 end
+
 
 action :remove do
-  file path do
+  file new_resource.path do
     action :delete
   end
+  new_resource.updated_by_last_action(true)
 end
 
+
+private
 def path
   new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
 end
 
+
+private
 def variable
   return new_resource.variable ? new_resource.variable : new_resource.name
 end

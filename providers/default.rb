@@ -20,6 +20,8 @@
 
 
 action :save do
+  service "procps"
+
   file getPath do
     notifies :start, 'service[procps]'
     content "#{new_resource.variable} = #{new_resource.value}\n"

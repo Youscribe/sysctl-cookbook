@@ -20,6 +20,8 @@
 
 
 action :save do
+  service "procps"
+
   template getPath do
     notifies :start, 'service[procps]'
     source 'sysctl.conf.erb'

@@ -20,7 +20,7 @@
 
 
 action :save do
-  template new_resource.path do
+  template getPath do
     notifies :start, 'service[procps]'
     source 'sysctl.conf.erb'
     owner 'root'
@@ -45,7 +45,7 @@ end
 
 
 action :remove do
-  file path do
+  file getPath do
     action :delete
   end
   new_resource.updated_by_last_action(true)
@@ -53,7 +53,7 @@ end
 
 
 private
-def path
+def getPath
   f_name = new_resource.name.gsub(' ', '_')
   return new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{f_name}.conf"
 end

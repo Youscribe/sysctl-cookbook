@@ -20,7 +20,7 @@
 
 
 action :save do
-  file new_resource.path do
+  file getPath do
     notifies :start, 'service[procps]'
     content "#{new_resource.variable} = #{new_resource.value}\n"
     owner 'root'
@@ -40,7 +40,7 @@ end
 
 
 action :remove do
-  file new_resource.path do
+  file getPath do
     action :delete
   end
   new_resource.updated_by_last_action(true)
@@ -48,7 +48,7 @@ end
 
 
 private
-def path
+def getPath
   new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
 end
 

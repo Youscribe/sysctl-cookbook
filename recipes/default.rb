@@ -20,7 +20,7 @@ if node.attribute?('sysctl')
   node['sysctl'].each do |item|
     f_name = item.first.gsub(' ', '_')
     template "/etc/sysctl.d/50-chef-attributes-#{f_name}.conf" do
-      notifies :start, 'service[procps]'
+      notifies :start, "service[procps]", :immediately
       source 'sysctl.conf.erb'
       mode '0644'
       owner 'root'

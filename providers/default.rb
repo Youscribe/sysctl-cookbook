@@ -23,8 +23,8 @@ action :save do
   service "procps"
 
   file getPath do
-    notifies :start, 'service[procps]'
-    content "#{new_resource.variable} = #{new_resource.value}\n"
+    notifies :start, "service[procps]", :immediately
+    content "#{getVariable} = #{new_resource.value}\n"
     owner 'root'
     group 'root'
     mode '0644'
@@ -35,7 +35,7 @@ end
 
 action :set do
   execute 'set sysctl' do
-    command "sysctl #{new_resource.variable}=#{new_resource.value}"
+    command "sysctl #{getVariable}=#{new_resource.value}"
   end
   new_resource.updated_by_last_action(true)
 end
@@ -49,13 +49,11 @@ action :remove do
 end
 
 
-private
 def getPath
   new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
 end
 
 
-private
-def variable
+def getVariable
   return new_resource.variable ? new_resource.variable : new_resource.name
 end

@@ -25,6 +25,7 @@ action :save do
   file getPath do
     notifies :start, "service[procps]", :immediately
     content "#{getVariable} = #{new_resource.value}\n"
+    cookbook 'sysctl'
     owner 'root'
     group 'root'
     mode '0644'
@@ -50,7 +51,7 @@ end
 
 
 def getPath
-  new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
+  new_resource.path ? new_resource.path : "/etc/sysctl.d/#{new_resource.priority}-#{new_resource.name}.conf"
 end
 
 

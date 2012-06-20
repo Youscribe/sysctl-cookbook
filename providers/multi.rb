@@ -25,12 +25,13 @@ action :save do
   template getPath do
     notifies :start, 'service[procps]'
     source 'sysctl.conf.erb'
+    cookbook 'sysctl'
     owner 'root'
     group 'root'
     mode '0644'
     variables(
       :instructions => new_resource.instructions,
-      :name => new_resource.name_attribute)
+      :name => new_resource.name)
   end
   new_resource.updated_by_last_action(true)
 end
@@ -57,5 +58,6 @@ end
 private
 def getPath
   f_name = new_resource.name.gsub(' ', '_')
-  return new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{f_name}.conf"
+  priority = new_resource.priority
+  return new_resource.path ? new_resource.path : "/etc/sysctl.d/#{priority}-#{f_name}.conf"
 end

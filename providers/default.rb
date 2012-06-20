@@ -50,7 +50,9 @@ end
 
 
 def getPath
-  new_resource.path ? new_resource.path : "/etc/sysctl.d/40-#{new_resource.name}.conf"
+  f_name = new_resource.name.gsub(' ', '_')
+  priority = new_resource.priority
+  return new_resource.path ? new_resource.path : "/etc/sysctl.d/#{priority}-#{f_name}.conf"
 end
 
 

@@ -25,7 +25,6 @@ action :save do
   file getPath do
     notifies :start, "service[procps]", :immediately
     content "#{getVariable} = #{new_resource.value}\n"
-    cookbook 'sysctl'
     owner 'root'
     group 'root'
     mode '0644'

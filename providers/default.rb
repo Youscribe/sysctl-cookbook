@@ -23,7 +23,7 @@ action :save do
   service "procps"
 
   file getPath do
-    notifies :start, "service[procps]", :immediately
+    notifies :start, resources(:service => "procps"), :immediately
     content "#{getVariable} = #{new_resource.value}\n"
     owner 'root'
     group 'root'

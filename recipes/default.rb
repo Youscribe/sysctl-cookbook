@@ -18,8 +18,10 @@
 # limitations under the License.
 #
 
-service 'procps'
-
+service "procps" do
+  supports :restart => true, :start => true, :stop => true
+  action :nothing
+end
 
 # TODO(Youscribe) change this by something more "clean".
 execute 'remove old files' do
@@ -32,7 +34,7 @@ if node.attribute?('sysctl')
   node['sysctl'].each do |item|
     f_name = item.first.gsub(' ', '_')
     template "/etc/sysctl.d/50-chef-attributes-#{f_name}.conf" do
-      notifies :start, "service[procps]", :immediately
+      notifies :start, resources(:service => "procps"), :immediately
       source 'sysctl.conf.erb'
       mode '0644'
       owner 'root'
@@ -44,7 +46,7 @@ end
 
 
 cookbook_file '/etc/sysctl.d/50-chef-static.conf' do
-  notifies :start, 'service[procps]'
+  notifies :start, resources(:service => "procps"), :immediately
   ignore_failure true
   mode '0644'
 end

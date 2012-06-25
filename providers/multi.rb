@@ -20,10 +20,11 @@
 
 
 action :save do
-  service "procps"
+  service "procps" do
+    supports :restart => true, :reload => true, :start => true
+  end
 
   template getPath do
-    notifies :start, 'service[procps]'
     source 'sysctl.conf.erb'
     cookbook 'sysctl'
     owner 'root'
@@ -32,6 +33,7 @@ action :save do
     variables(
       :instructions => new_resource.instructions,
       :name => new_resource.name)
+    notifies :reload, resources(:service => "procps"), :immediately
   end
   new_resource.updated_by_last_action(true)
 end

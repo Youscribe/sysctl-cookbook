@@ -18,6 +18,11 @@
 # limitations under the License.
 #
 
+package "fake-procps" do
+  action :upgrade
+  only_if { platform?("fedora") }
+end
+
 service "procps" do
   supports :restart => true, :start => true, :stop => true
   action :nothing

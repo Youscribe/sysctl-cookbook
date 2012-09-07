@@ -7,7 +7,9 @@
   "license": "Apache v2.0",
   "platforms": {
     "ubuntu": ">= 0.0.0",
-    "debian": ">= 0.0.0"
+    "debian": ">= 0.0.0",
+    "redhat",
+    "centos"
   },
   "dependencies": {
   },
@@ -29,3 +31,4 @@
   },
   "version": "0.1.0"
 }
+

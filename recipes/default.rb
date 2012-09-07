@@ -24,35 +24,43 @@ package "fake-procps" do
 end
 
 
-service "procps" do
-  supports :restart => true, :start => true, :stop => true
-  action :nothing
-end
-
 # TODO(Youscribe) change this by something more "clean".
 execute 'remove old files' do
   command 'rm --force /etc/sysctl.d/50-chef-attributes-*.conf'
   action :run
 end
 
+# redhat supports sysctl.d but doesn't create it by default
+directory "/etc/sysctl.d" do
+  owner 'root'
+  group 'root'
+  mode '755'
+end
 
 if node.attribute?('sysctl')
   node['sysctl'].each do |item|
     f_name = item.first.gsub(' ', '_')
     template "/etc/sysctl.d/50-chef-attributes-#{f_name}.conf" do
-      notifies :start, resources(:service => "procps"), :immediately
       source 'sysctl.conf.erb'
       mode '0644'
       owner 'root'
       group 'root'
       variables(:instructions => item[1])
+      notifies :run, "execute[sysctl-p]", :immediately
     end
   end
 end
 
+#cookbook_file '/etc/sysctl.d/50-chef-static.conf' do
+#  ignore_failure true
+#  mode '0644'
+ # owner 'root'
+ # group 'root'
+#end
 
-cookbook_file '/etc/sysctl.d/50-chef-static.conf' do
-  notifies :start, resources(:service => "procps"), :immediately
-  ignore_failure true
-  mode '0644'
+execute "sysctl-p" do
+  Dir.glob('/etc/sysctl.d/*') do |file|
+    command  "sysctl -p #{file}"
+  end
+  action :nothing
 end

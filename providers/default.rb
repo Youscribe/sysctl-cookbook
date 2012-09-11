@@ -20,10 +20,16 @@
 
 
 action :save do
-  service "procps"
+  execute "sysctl-p" do
+    Dir.glob('/etc/sysctl.d/*') do |file|
+      command  "sysctl -p #{file}"
+    end
+    action :nothing
+  end
+
 
   file getPath do
-    notifies :start, resources(:service => "procps"), :immediately
+    notifies :run, resources(:execute => "sysctl-p"), :immediately
     content "#{getVariable} = #{new_resource.value}\n"
     owner 'root'
     group 'root'

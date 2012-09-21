@@ -46,20 +46,13 @@ if node.attribute?('sysctl')
       owner 'root'
       group 'root'
       variables(:instructions => item[1])
-      notifies :run, "execute[sysctl-p]", :immediately
+      notifies :run, "execute[sysctl-p]"
     end
   end
 end
 
-#cookbook_file '/etc/sysctl.d/50-chef-static.conf' do
-#  ignore_failure true
-#  mode '0644'
- # owner 'root'
- # group 'root'
-#end
-
 execute "sysctl-p" do
-  Dir.glob('/etc/sysctl.d/*') do |file|
+  Dir.glob('/etc/sysctl.d/*.conf').each do |file|
     command  "sysctl -p #{file}"
   end
   action :nothing

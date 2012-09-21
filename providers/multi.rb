@@ -17,13 +17,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-
 action :save do
+
+  fullname = getPath
+
   execute "sysctl-p" do
-    Dir.glob('/etc/sysctl.d/*') do |file|
-      command  "sysctl -p #{file}"
-    end
+    command "sysctl -p #{fullname}"
     action :nothing
   end
 

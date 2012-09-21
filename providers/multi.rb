@@ -36,7 +36,7 @@ action :save do
     variables(
       :instructions => new_resource.instructions,
       :name => new_resource.name)
-    notifies :run, resources(:execute => "sysctl-p"), :immediately
+    notifies :run, resources(:execute => "sysctl-p")
   end
   new_resource.updated_by_last_action(true)
 end

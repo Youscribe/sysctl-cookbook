@@ -21,7 +21,7 @@ action :save do
 
   fullname = getPath
 
-  execute "sysctl-p" do
+  execute "sysctl -p" do
     command "sysctl -p #{fullname}"
     action :nothing
   end
@@ -35,7 +35,7 @@ action :save do
     variables(
       :instructions => new_resource.instructions,
       :name => new_resource.name)
-    notifies :run, resources(:execute => "sysctl-p")
+    notifies :run, "execute[sysctl -p]"
   end
   new_resource.updated_by_last_action(true)
 end

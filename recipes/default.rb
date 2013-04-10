@@ -52,8 +52,10 @@ if node.attribute?('sysctl')
 end
 
 execute "sysctl-p" do
+  command_str = ""
   Dir.glob('/etc/sysctl.d/*.conf').each do |file|
-    command  "sysctl -p #{file}"
+    command_str += "sysctl -p #{file}; "
   end
+  command command_str
   action :nothing
 end

@@ -18,14 +18,6 @@
 # limitations under the License.
 #
 action :save do
-
-  fullname = getPath
-
-  execute "sysctl -p" do
-    command "sysctl -p #{fullname}"
-    action :nothing
-  end
-
   template getPath do
     source new_resource.source
     cookbook new_resource.cookbook

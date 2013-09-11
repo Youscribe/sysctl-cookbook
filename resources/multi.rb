@@ -21,6 +21,10 @@
 def initialize(*args)
   super
   @action = :save
+
+  unless node.recipe?("sysctl::default")
+    @run_context.include_recipe "sysctl::default"
+  end
 end
 
 actions :save, :set, :remove

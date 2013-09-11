@@ -37,18 +37,10 @@ directory "/etc/sysctl.d" do
   mode '755'
 end
 
-if node.attribute?('sysctl')
-  node['sysctl'].each do |item|
-    f_name = item.first.gsub(' ', '_')
-    template "/etc/sysctl.d/50-chef-attributes-#{f_name}.conf" do
-      source 'sysctl.conf.erb'
-      mode '0644'
-      owner 'root'
-      group 'root'
-      variables(:instructions => item[1])
-      notifies :run, "execute[sysctl-p]"
-    end
-  end
+sysctl "chef-attributes" do
+  priority "50"
+  source "chef-attributes.erb"
+  value ""
 end
 
 execute "sysctl-p" do

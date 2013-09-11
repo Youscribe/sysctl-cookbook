@@ -29,3 +29,5 @@ attribute :name, :kind_of => String, :name_attribute => true
 attribute :path, :kind_of => String, :default => nil
 attribute :instructions, :kind_of => Hash, :default => nil, :required => true
 attribute :priority, :kind_of => String, :default => "40"
+attribute :cookbook, :kind_of => String, :default => "sysctl"
+attribute :source, :kind_of => String, :default => "sysctl.conf.erb"

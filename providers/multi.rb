@@ -27,8 +27,8 @@ action :save do
   end
 
   template getPath do
-    source 'sysctl.conf.erb'
-    cookbook 'sysctl'
+    source new_resource.source
+    cookbook new_resource.cookbook
     owner 'root'
     group 'root'
     mode '0644'

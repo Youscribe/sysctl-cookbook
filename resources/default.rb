@@ -21,6 +21,10 @@
 def initialize(*args)
   super
   @action = :save
+
+  unless node.recipe?("sysctl::default")
+    @run_context.include_recipe "sysctl::default"
+  end
 end
 
 actions :save, :set, :remove
@@ -30,3 +34,5 @@ attribute :variable, :kind_of => String, :default => nil
 attribute :value, :kind_of => String, :required => true
 attribute :path, :kind_of => String, :default => nil
 attribute :priority, :kind_of => String, :default => "40"
+attribute :cookbook, :kind_of => String, :default => "sysctl"
+attribute :source, :kind_of => String, :default => "sysctl.conf.erb"

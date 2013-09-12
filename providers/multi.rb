@@ -18,24 +18,16 @@
 # limitations under the License.
 #
 action :save do
-
-  fullname = getPath
-
-  execute "sysctl -p" do
-    command "sysctl -p #{fullname}"
-    action :nothing
-  end
-
   template getPath do
-    source 'sysctl.conf.erb'
-    cookbook 'sysctl'
+    source new_resource.source
+    cookbook new_resource.cookbook
     owner 'root'
     group 'root'
     mode '0644'
     variables(
       :instructions => new_resource.instructions,
       :name => new_resource.name)
-    notifies :run, "execute[sysctl -p]"
+    notifies :run, "execute[sysctl-p]"
   end
   new_resource.updated_by_last_action(true)
 end

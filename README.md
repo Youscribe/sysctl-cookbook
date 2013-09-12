@@ -16,8 +16,7 @@ There are two ways of setting sysctl values:
 1. Set chef attributes in the **sysctl** namespace. e.g.:
 
         node.set['sysctl']['set swappiness'] = { 'vm.swappiness' => '20' }
-2. Set values in a `cookbook_file` Resource.
-3. With Resource/Provider.
+2. With Resource/Provider.
 
 Resource/Provider
 =================
@@ -46,16 +45,12 @@ sysctl
 - **cookbook** - Cookbook that contains the template file, default to `sysctl`.
 
 ### Examples
-
-###ruby
-
     # Set 'vm.swappiness' to '60'. Will create /etc/sysctl.d/40-vm.wappiness.conf
     sysctl 'vm.swappiness' do
         value '60'
     end
 
 ####the same. will create `/etc/sysctl.d/40-vm_swappiness_to_60.conf`
-
     sysctl 'vm swappiness to 60' do
       variable 'vm.swappiness'
       value '60'
@@ -93,7 +88,6 @@ sysctl_multi
 
 ### Examples
 
-####ruby
 ### set multi variables. will create /etc/sysctl.d/69-ip_config.conf
     sysctl_multi 'ip config' do
       priority '69'
@@ -132,7 +126,6 @@ create dummy resources with `action :nothing`.  For example,
 `/etc/sysctl.d/88-raid-settings.conf` is delivered via a vendor's RPM.  Adding
 the following _dummy_ resource will prevent the file from being removed.
 
-####ruby
     sysctl 'raid-settings' do
       action :nothing
       priority '88'
